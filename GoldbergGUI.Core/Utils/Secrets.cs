@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 
 namespace GoldbergGUI.Core.Utils
 {
@@ -6,7 +7,19 @@ namespace GoldbergGUI.Core.Utils
     {
         public string SteamWebApiKey()
         {
-            return "<ENTER STEAM WEB API KEY HERE>";
+            string executableDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            string keyFilePath = Path.Combine(executableDirectory, "key.ini");
+
+            // Check if the key file exists
+            if (!File.Exists(keyFilePath))
+            {
+                throw new FileNotFoundException("Key file not found.", keyFilePath);
+            }
+
+            // Read the key from the file
+            string apiKey = File.ReadAllText(keyFilePath).Trim();
+
+            return apiKey;
         }
     }
 }
