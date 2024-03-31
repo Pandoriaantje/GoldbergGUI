@@ -8,3 +8,9 @@ GoldbergGUI.WPF/obj/
 GoldbergGUI.Core/bin/
 
 GoldbergGUI.Core/obj/
+
+GoldbergGUI.Core/Properties/PublishProfiles/
+
+GoldbergGUI.WPF/Properties/PublishProfiles/
+
+*.user

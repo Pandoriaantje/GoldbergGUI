@@ -9,7 +9,7 @@ namespace GoldbergGUI.Core.Utils
         public string SteamWebApiKey()
         {
             string executableDirectory = AppDomain.CurrentDomain.BaseDirectory;
-            string keyFilePath = Path.Combine(executableDirectory, "key.txt");
+            string keyFilePath = Path.Combine(executableDirectory, "key.ini");
 
             // Check if the key file exists
             if (!File.Exists(keyFilePath))
