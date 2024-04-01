@@ -52,8 +52,8 @@ namespace GoldbergGUI.Core.Services
             Path.Combine(GlobalSettingsPath, "settings/custom_broadcasts.txt");
 
         // ReSharper disable StringLiteralTypo
-        private readonly List<string> _interfaceNames = new List<string>
-        {
+        private readonly List<string> _interfaceNames =
+        [
             "SteamClient",
             "SteamGameServer",
             "SteamGameServerStats",
@@ -78,7 +78,7 @@ namespace GoldbergGUI.Core.Services
             "SteamController",
             "SteamMasterServerUpdater",
             "STEAMVIDEO_INTERFACE_V"
-        };
+        ];
 
         // Call Download
         // Get global settings
@@ -241,7 +241,7 @@ namespace GoldbergGUI.Core.Services
             {
                 _log.Info("Getting DLCs...");
                 var readAllLinesAsync = await File.ReadAllLinesAsync(dlcTxt).ConfigureAwait(false);
-                var expression = new Regex(@"(?<id>.*) *= *(?<name>.*)");
+                Regex expression = new(@"(?<id>.*) *= *(?<name>.*)");
                 // ReSharper disable once LoopCanBeConvertedToQuery
                 foreach (var line in readAllLinesAsync)
                 {
@@ -258,7 +258,7 @@ namespace GoldbergGUI.Core.Services
                 if (File.Exists(appPathTxt))
                 {
                     var appPathAllLinesAsync = await File.ReadAllLinesAsync(appPathTxt).ConfigureAwait(false);
-                    var appPathExpression = new Regex(@"(?<id>.*) *= *(?<appPath>.*)");
+                    Regex appPathExpression = new(@"(?<id>.*) *= *(?<appPath>.*)");
                     foreach (var line in appPathAllLinesAsync)
                     {
                         var match = appPathExpression.Match(line);
@@ -477,7 +477,7 @@ namespace GoldbergGUI.Core.Services
         {
             var steamSettingsDirExists = Directory.Exists(Path.Combine(path, "steam_settings"));
             var steamAppIdTxtExists = File.Exists(Path.Combine(path, "steam_appid.txt"));
-            _log.Debug($"Goldberg applied? {(steamSettingsDirExists && steamAppIdTxtExists).ToString()}");
+            _log.Debug($"Goldberg applied? {steamSettingsDirExists && steamAppIdTxtExists}");
             return steamSettingsDirExists && steamAppIdTxtExists;
         }
 
@@ -491,7 +491,7 @@ namespace GoldbergGUI.Core.Services
             var client = new HttpClient();
             var response = await client.GetAsync(GoldbergUrl).ConfigureAwait(false);
             var body = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-            var regex = new Regex(
+            Regex regex = new(
                 @"https:\/\/gitlab\.com\/Mr_Goldberg\/goldberg_emulator\/-\/jobs\/(?<jobid>.*)\/artifacts\/download");
             var jobIdPath = Path.Combine(_goldbergPath, "job_id");
             var match = regex.Match(body);
@@ -626,7 +626,7 @@ namespace GoldbergGUI.Core.Services
                 FindInterfaces(ref result, dllContent, new Regex($"{name}\\d{{3}}"));
                 if (!FindInterfaces(ref result, dllContent, new Regex(@"STEAMCONTROLLER_INTERFACE_VERSION\d{3}")))
                 {
-                    FindInterfaces(ref result, dllContent, new Regex("STEAMCONTROLLER_INTERFACE_VERSION"));
+                    _ = FindInterfaces(ref result, dllContent, new Regex("STEAMCONTROLLER_INTERFACE_VERSION"));
                 }
             }
 
@@ -639,8 +639,8 @@ namespace GoldbergGUI.Core.Services
             }
         }
 
-        public List<string> Languages() => new List<string>
-        {
+        public List<string> Languages() =>
+        [
             DefaultLanguage,
             "arabic",
             "bulgarian",
@@ -668,13 +668,13 @@ namespace GoldbergGUI.Core.Services
             "thai",
             "turkish",
             "ukrainian"
-        };
+        ];
 
         private static bool FindInterfaces(ref HashSet<string> result, string dllContent, Regex regex)
         {
             var success = false;
             var matches = regex.Matches(dllContent);
-            foreach (Match match in matches)
+            foreach (Match match in matches.Cast<Match>())
             {
                 success = true;
                 //result += $@"{match.Value}\n";
@@ -700,17 +700,11 @@ namespace GoldbergGUI.Core.Services
 
             try
             {
-                using (var httpClient = new HttpClient())
-                {
-                    using (var response = await httpClient.GetAsync(imageUrl))
-                    {
-                        response.EnsureSuccessStatusCode();
-                        using (var fileStream = new FileStream(targetPath, FileMode.Create))
-                        {
-                            await response.Content.CopyToAsync(fileStream);
-                        }
-                    }
-                }
+                using HttpClient httpClient = new();
+                using var response = await httpClient.GetAsync(imageUrl);
+                response.EnsureSuccessStatusCode();
+                using FileStream fileStream = new(targetPath, FileMode.Create);
+                await response.Content.CopyToAsync(fileStream);
             }
             catch (HttpRequestException ex)
             {
