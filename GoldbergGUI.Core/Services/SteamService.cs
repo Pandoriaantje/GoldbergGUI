@@ -227,7 +227,7 @@ namespace GoldbergGUI.Core.Services
 
                     try
                     {
-                        var steamDbUri = new Uri($"https://steamdb.info/app/{steamApp.AppId}/dlc/");
+                        var steamDbUri = new Uri($"https://webcache.googleusercontent.com/search?q=cache:https://steamdb.info/app/{steamApp.AppId}/dlc/");
 
                         var client = new HttpClient();
                         client.DefaultRequestHeaders.UserAgent.ParseAdd(UserAgent);
