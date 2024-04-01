@@ -688,6 +688,7 @@ namespace GoldbergGUI.Core.Services
         {
             var fileName = Path.GetFileName(imageUrl);
             var targetPath = Path.Combine(imageFolder, fileName);
+
             if (File.Exists(targetPath))
             {
                 return;
@@ -697,8 +698,25 @@ namespace GoldbergGUI.Core.Services
                 _log.Warn($"Previously downloaded image '{imageUrl}' is now missing!");
             }
 
-            var wc = new System.Net.WebClient();
-            await wc.DownloadFileTaskAsync(new Uri(imageUrl, UriKind.Absolute), targetPath);
+            try
+            {
+                using (var httpClient = new HttpClient())
+                {
+                    using (var response = await httpClient.GetAsync(imageUrl))
+                    {
+                        response.EnsureSuccessStatusCode();
+                        using (var fileStream = new FileStream(targetPath, FileMode.Create))
+                        {
+                            await response.Content.CopyToAsync(fileStream);
+                        }
+                    }
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                _log.Error($"Error downloading image: {ex.Message}");
+                // TODO: Handle the exception as needed
+            }
         }
     }
 }
