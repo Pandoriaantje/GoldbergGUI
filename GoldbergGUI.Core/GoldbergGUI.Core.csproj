@@ -7,18 +7,20 @@
 		<FileVersion>0.3.0</FileVersion>
 		<Company>Jeddunk</Company>
 		<Platforms>AnyCPU;x86;x64</Platforms>
+		<IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="AngleSharp" Version="0.14.0" />
+		<PackageReference Include="AngleSharp" Version="1.1.2" />
 		<PackageReference Include="MvvmCross" Version="7.1.2" />
 		<PackageReference Include="NinjaNye.SearchExtensions" Version="3.0.1" />
-		<PackageReference Include="SharpCompress" Version="0.35.0" />
-		<PackageReference Include="sqlite-net-pcl" Version="1.9.141-beta" />
+		<PackageReference Include="SharpCompress" Version="0.36.0" />
+		<PackageReference Include="sqlite-net-pcl" Version="1.9.172" />
 		<!-- Override SQLitePCLRaw.bundle_green version, use newer version that doesn't produce warnings on .NET 8 -->
 		<!-- https://github.com/praeclarum/sqlite-net/issues/1205 -->
-		<PackageReference Include="SQLitePCLRaw.bundle_green" Version="2.1.7" />
-		<PackageReference Include="SteamStorefrontAPI" Version="2.0.1.421" />
+		<PackageReference Include="SQLitePCLRaw.bundle_green" Version="2.1.8" />
+		<PackageReference Include="SQLitePCLRaw.lib.e_sqlite3" Version="2.1.8" />
+		<PackageReference Include="SteamStorefrontAPI" Version="2.0.1.671" />
 	</ItemGroup>
 
 </Project>
